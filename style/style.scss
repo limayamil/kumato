@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap");
+
+@mixin centrarFlex($direccion) {
+  display: flex;
+  justify-content: center;
+  flex-direction: $direccion;
+}
+
+$rojo: #8a3535;
+$amarillo: #8a8135;
+$verde: #358a39;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  h2 {
+    font-weight: 300;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: Rubik, sans-serif;
+    display: inline-block;
+    @include centrarFlex(row);
+  }
+
+  main {
+    #kumato {
+      width: 200px;
+      margin: 0 auto;
+      padding: 15px 0;
+      border-radius: 25px;
+      h2 {
+        font-size: 3em;
+      }
+    }
+
+    .running {
+      background: $rojo;
+    }
+
+    .paused {
+      background: $amarillo;
+    }
+
+    .not-started {
+      background: $verde;
+    }
+
+    .actions {
+      @include centrarFlex(row);
+      .fadeOut {
+        opacity: 0;
+        pointer-events: 0;
+      }
+      .fadein {
+        opacity: 1;
+        pointer-events: 1;
+      }
+    }
+  }
+}
+.dark-mode {
+  background: #393939;
+  color: #fff;
+}

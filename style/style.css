@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body h2 {
+  font-weight: 300;
+}
+
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+  font-family: Rubik, sans-serif;
+  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+body main #kumato {
+  width: 200px;
+  margin: 0 auto;
+  padding: 15px 0;
+  border-radius: 25px;
+}
+
+body main #kumato h2 {
+  font-size: 3em;
+}
+
+body main .running {
+  background: #8a3535;
+}
+
+body main .paused {
+  background: #8a8135;
+}
+
+body main .not-started {
+  background: #358a39;
+}
+
+body main .actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+body main .actions .fadeOut {
+  opacity: 0;
+  pointer-events: 0;
+}
+
+body main .actions .fadein {
+  opacity: 1;
+  pointer-events: 1;
+}
+
+.dark-mode {
+  background: #393939;
+  color: #fff;
+}
+/*# sourceMappingURL=style.css.map */
