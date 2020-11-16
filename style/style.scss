@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap");
 
 @mixin centrarFlex($direccion) {
   display: flex;
@@ -32,13 +33,16 @@ body {
   }
 
   main {
+    @include centrarFlex(column);
+
     #kumato {
-      width: 200px;
+      width: auto;
+      display: inline-block;
       margin: 0 auto;
-      padding: 15px 0;
+      padding: 7px 15px;
       border-radius: 25px;
       h2 {
-        font-size: 3em;
+        font-size: 5em;
       }
     }
 
@@ -50,18 +54,29 @@ body {
       background: $amarillo;
     }
 
-    .not-started {
+    .not-started,
+    .resting {
       background: $verde;
     }
 
     .actions {
       @include centrarFlex(row);
+      button {
+        border: none;
+        padding: 5px 7px;
+        margin: 15px 7px;
+        border-radius: 7px;
+        background: #ffffff;
+        text-transform: uppercase;
+        font-family: Karla, sans-serif;
+      }
+
       .fadeOut {
-        opacity: 0;
+        display: none;
         pointer-events: 0;
       }
-      .fadein {
-        opacity: 1;
+      .fadeIn {
+        display: block;
         pointer-events: 1;
       }
     }

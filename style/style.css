@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -28,15 +29,29 @@ body h6 {
           flex-direction: row;
 }
 
+body main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
 body main #kumato {
-  width: 200px;
+  width: auto;
+  display: inline-block;
   margin: 0 auto;
-  padding: 15px 0;
+  padding: 7px 15px;
   border-radius: 25px;
 }
 
 body main #kumato h2 {
-  font-size: 3em;
+  font-size: 5em;
 }
 
 body main .running {
@@ -47,7 +62,8 @@ body main .paused {
   background: #8a8135;
 }
 
-body main .not-started {
+body main .not-started,
+body main .resting {
   background: #358a39;
 }
 
@@ -64,13 +80,23 @@ body main .actions {
           flex-direction: row;
 }
 
+body main .actions button {
+  border: none;
+  padding: 5px 7px;
+  margin: 15px 7px;
+  border-radius: 7px;
+  background: #ffffff;
+  text-transform: uppercase;
+  font-family: Karla, sans-serif;
+}
+
 body main .actions .fadeOut {
-  opacity: 0;
+  display: none;
   pointer-events: 0;
 }
 
-body main .actions .fadein {
-  opacity: 1;
+body main .actions .fadeIn {
+  display: block;
   pointer-events: 1;
 }
 
