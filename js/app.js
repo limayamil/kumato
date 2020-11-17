@@ -4,45 +4,83 @@ const btnResume = document.getElementById("resume");
 const btnRest = document.getElementById("rest");
 const btnSkip = document.getElementById("skip");
 const divKumato = document.getElementById("kumato");
-const timer25 = 0;
+let inputTaskValue = "";
+const inputTask = document.getElementById("task");
+const taskList = document.getElementById("taskList");
+let listOfTasks = [];
+let listOfTimes = [];
+const timer25 = 25;
 const timerShortRest = 5;
-const segundos = 60;
+const segundos = 0;
 
 class kumatoTimer {
-  constructor(status, timerStatus, esperandoPlay = false, minutosRestantes, segundosRestantes) {
+  constructor(status, timerStatus, esperandoPlay, minutosRestantes,
+    segundosRestantes, kumatoCompleto = false, cicloCompleto = false,
+    sesionCompleta = false) {
     this._status = status;
     this._timerStatus = timerStatus;
     this._esperandoPlay = esperandoPlay;
     this._minutosRestantes = minutosRestantes;
     this._segundosRestantes = segundosRestantes;
+    this._kumatoCompleto = kumatoCompleto;
+    this._cicloCompleto = cicloCompleto;
+    this._sesionCompleta = sesionCompleta;
   }
 
-  inicializar(){
+  reiniciar(){
     this._status = "Working";
     this._timerStatus = "Running";
     this._esperandoPlay = true;
     this._minutosRestantes = timer25;
-    this._segundosRestantes = segundos;
+    this._segundosRestantes = 0;
+    this.mostrarTimer();
   }
 
   ejecutar(){
-    if (this._status == "Working") {
-      // Si Kumato se inicia por primera vez en la sesión.
-      this._timerStatus = "Running";
-      console.log('Ejecutando Kumato');
-      console.log(this._status);
-      divKumato.classList.remove("not-started");
-      divKumato.classList.add("running");
-      mostrarAccionesTrabajando();
-    } else if (this._status == "Resting") {
-      // Si un nuevo Kumato comienza luego de descansar.
-      console.log("Ejecutar");
-      this._timerStatus = "Running";
-      this._esperandoPlay = false;
-      divKumato.classList.remove("paused");
-      divKumato.classList.add("running");
-      mostrarAccionesDescansando();
-    }
+    if (this._cicloCompleto != true){
+      if (this._status == "Working") {
+        // Si Kumato se inicia por primera vez en la sesión.
+        inputTaskValue = document.getElementById("task").value;
+        if (inputTaskValue.length > 0) {
+          logNewTask(inputTaskValue);
+        }
+        inputTask.classList.add("fadeOut");
+        this._timerStatus = "Running";
+        console.log('Ejecutando Kumato');
+        console.log(this._status);
+        divKumato.classList.remove("not-started");
+        divKumato.classList.add("running");
+        mostrarAccionesTrabajando();
+      } else if (this._status == "Resting") {
+        // Si un nuevo Kumato comienza luego de descansar.
+        this._timerStatus = "Running";
+        this._esperandoPlay = false;
+        divKumato.classList.remove("paused");
+        divKumato.classList.add("running");
+        mostrarAccionesDescansando();
+        }
+      } else {
+        // Si se comienza un nuevo Kumato luego de terminar un ciclo.
+        inputTaskValue = document.getElementById("task").value;
+        if (inputTaskValue.length > 0) {
+          logNewTask(inputTaskValue);
+        }
+        this._cicloCompleto = false;
+        this._esperandoPlay = false;
+        inputTask.classList.add("fadeOut");
+        this._timerStatus = "Running";
+        console.log('Ejecutando Kumato');
+        console.log(this._status);
+        divKumato.classList.remove("not-started");
+        divKumato.classList.add("running");
+
+        console.log(this._status);
+        console.log(this._timerStatus);
+
+        inputTask.classList.remove("fadeIn");
+        inputTask.classList.add("fadeOut");
+        mostrarAccionesTrabajando();
+      }
   }
 
   pausar(){
@@ -78,11 +116,15 @@ class kumatoTimer {
     divKumato.classList.add("resting");
   }
 
-  saltearDescanso(){
+  comienzoNuevoCiclo(){
     this.status = "Working";
-    minutosRestantes = timerElegido - 1;
-    segundosRestantes = segundos;
-    mostrarAccionesTrabajando();
+    this._cicloCompleto = true;
+    this.reiniciar();
+    mostrarAccionesPorComenzar();
+    logEndTask();
+    inputTask.value = "";
+    inputTask.classList.remove("fadeOut");
+    inputTask.classList.add("fadeIn");
   }
 
   mostrarTimer(){
@@ -120,41 +162,42 @@ const mostrarBtn = (boton) => {
   }
 };
 
+const ocultarTodo = () => {
+  ocultarBtn(btnStart);
+  ocultarBtn(btnResume);
+  ocultarBtn(btnPause);
+  ocultarBtn(btnSkip);
+  ocultarBtn(btnRest);
+}
+
 const mostrarAccionesPorComenzar = () => {
+  ocultarTodo();
   mostrarBtn(btnStart);
 };
 
 const mostrarAccionesTrabajando = () => {
   if (kumato._status == "Resting") {
-    ocultarBtn(btnStart);
-    ocultarBtn(btnResume);
+    ocultarTodo();
     mostrarBtn(btnPause);
-    ocultarBtn(btnRest);
   } else if (kumato._status == "Working") {
-    ocultarBtn(btnStart);
-    ocultarBtn(btnResume);
+    ocultarTodo();
     mostrarBtn(btnPause);
     mostrarBtn(btnRest);
   }
 };
 
 const mostrarAccionesEsperando = () => {
+  ocultarTodo();
   mostrarBtn(btnStart);
-  ocultarBtn(btnResume);
-  ocultarBtn(btnPause);
-  ocultarBtn(btnRest);
 };
 
 const mostrarAccionesPausado = () => {
-  ocultarBtn(btnPause);
-  ocultarBtn(btnRest);
+  ocultarTodo();
   mostrarBtn(btnResume);
 };
 
 const mostrarAccionesDescansando = () => {  
-  ocultarBtn(btnRest);
-  ocultarBtn(btnResume);
-  ocultarBtn(btnStart);
+  ocultarTodo();
   mostrarBtn(btnPause);
   mostrarBtn(btnSkip);
 };
@@ -167,18 +210,37 @@ var actualizarTimer = setInterval(function () {
         kumato._segundosRestantes--;
       } else {
         kumato._minutosRestantes--;
-        kumato._segundosRestantes = segundos - 1;
+        kumato._segundosRestantes = 60 - 1;
       }
       kumato.mostrarTimer();
     } else {
       if (kumato._status == "Working"){
         kumato.descansar();
       } else if (kumato._status == "Resting"){
-        kumato.ejecutar();
+        kumato.comienzoNuevoCiclo();
       }
     }
   }
 }, 1000);
+
+const logNewTask = task => {
+  listOfTasks.push(task);
+  let d = new Date();
+  let h = d.getHours();
+  let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+  let hm = h + ":" + m;
+  listOfTimes.push(hm);
+  taskList.innerHTML += '<div class="taskRow"><div class="taskName">'+ task +'</div><div class="taskTime">empezado a las ' + hm + '</div></div>';
+}
+
+const logEndTask = () => {
+  listOfTasks.push("Fin de la tarea");
+  let d = new Date();
+  let h = d.getHours();
+  let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+  let hm = h + ":" + m;
+  taskList.innerHTML += '<div class="taskRow"><div class="taskName">Fin de la tarea</div><div class="taskTime">a las ' + hm + '</div></div>';
+}
 
 btnStart.addEventListener("click", () => {
   kumato.ejecutar();
@@ -197,7 +259,7 @@ btnRest.addEventListener("click", () => {
 });
 
 btnSkip.addEventListener("click", () => {
-  kumato.saltearDescanso();
+  kumato.comienzoNuevoCiclo();
 });
 
 mostrarAccionesPorComenzar();

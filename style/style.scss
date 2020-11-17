@@ -70,15 +70,45 @@ body {
         text-transform: uppercase;
         font-family: Karla, sans-serif;
       }
+    }
 
-      .fadeOut {
-        display: none;
-        pointer-events: 0;
+    .tasks {
+      @include centrarFlex(column);
+      width: 500px;
+      margin: 0 auto;
+      font-family: Karla, sans-serif;
+
+      #task {
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+        border-bottom: 1px dashed #757575;
+        margin-bottom: 25px;
+        font-family: Karla, sans-serif;
+        font-size: 2em;
+        color: #fff;
       }
-      .fadeIn {
-        display: block;
-        pointer-events: 1;
+
+      .taskRow {
+        @include centrarFlex(row);
+
+        .taskName {
+          font-weight: 700;
+        }
+
+        div {
+          padding: 0 5px;
+        }
       }
+    }
+
+    .fadeOut {
+      display: none;
+      pointer-events: 0;
+    }
+    .fadeIn {
+      display: block;
+      pointer-events: 1;
     }
   }
 }
